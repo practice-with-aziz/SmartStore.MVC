@@ -8,6 +8,7 @@
             <th>Author</th>
             <th>Price</th>
             <th>Genre</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -18,6 +19,7 @@
                 <td>@book.Author</td>
                 <td>@book.Price</td>
                 <td>@book.Genre</td>
+                <td><a asp-controller="Books" asp-action="Details" asp-route-id="@book.BookId">Details</a></td>
             </tr>
         }
     </tbody>

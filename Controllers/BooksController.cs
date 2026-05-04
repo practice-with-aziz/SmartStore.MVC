@@ -35,5 +35,13 @@ namespace SmartStore.MVC.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var book = await _context.Books.FindAsync(id);
+            if (book is null)
+                return NotFound();
+            return View(book);  
+        }
     }
 }
