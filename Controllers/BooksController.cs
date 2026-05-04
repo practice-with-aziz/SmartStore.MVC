@@ -43,5 +43,28 @@ namespace SmartStore.MVC.Controllers
                 return NotFound();
             return View(book);  
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var book = await _context.Books.FindAsync(id);
+
+            if (book is null)
+                return NotFound();
+
+            return View(book);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Book book)
+        {
+            if (!ModelState.IsValid)
+                return View(book);
+
+            _context.Books.Update(book);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
