@@ -18,5 +18,22 @@ namespace SmartStore.MVC.Controllers
             var books = await _context.Books.ToListAsync();
             return View(books);
         }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(Book book)
+        {
+            if (!ModelState.IsValid)
+                return View(book);
+
+            _context.Books.Add(book);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
