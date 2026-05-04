@@ -61,9 +61,43 @@ namespace SmartStore.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(book);
 
-            _context.Books.Update(book);
+            var existing = await _context.Books.FindAsync(book.BookId);
+
+            if (existing is null)
+                return NotFound();
+
+            existing.Title = book.Title;
+            existing.Author = book.Author;
+            existing.Price = book.Price;
+            existing.Genre = book.Genre;
+
             await _context.SaveChangesAsync();
 
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var book = await _context.Books.FindAsync(id);
+
+            if (book is null)
+                return NotFound();
+
+            return View(book);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirm(int id)
+        {
+            var existing = await _context.Books.FindAsync(id);
+
+            if (existing is null)
+                return NotFound();
+
+            _context.Books.Remove(existing);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
     }
